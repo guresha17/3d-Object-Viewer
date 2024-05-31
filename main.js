@@ -151,6 +151,17 @@ initialBounceTl.fromTo(
 // Start the initial bounce animation
 initialBounceTl.play();
 
+// Button bounce animation
+const bounce = (element) => {
+  gsap.to(element, {
+    scale: 1.2,
+    duration: 0.2,
+    yoyo: true,
+    repeat: 1,
+    ease: "power1.inOut",
+  });
+};
+
 moveButton.addEventListener("click", () => {
   bounce(moveButton);
   objectTl.play();
