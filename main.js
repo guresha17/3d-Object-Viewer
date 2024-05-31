@@ -3,18 +3,21 @@ import "./style.css";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import gsap from "gsap";
 
-//Scene
+// Scene
 const scene = new THREE.Scene();
 
-//Create our object
+// Create our object
 
-//sphere
-const geometry = new THREE.SphereGeometry(2, 64, 64);
-// 5 = radius, 64 = widthSegments, 64 = heightSegments
+// Define the object name (you can change this to 'cone' to render a cone)
+const objectName = "sphere"; // 'sphere' or 'cone'
 
-//cone
-// const geometry = new THREE.ConeGeometry(2, 4, 4);
-// 2 = radius, 4 = height, 4 = radialSegments
+// Conditionally create our object based on the object name
+let geometry;
+if (objectName === "sphere") {
+  geometry = new THREE.SphereGeometry(2, 64, 64); // 2 = radius, 64 = widthSegments, 64 = heightSegments
+} else if (objectName === "cone") {
+  geometry = new THREE.ConeGeometry(2, 4, 64); // 2 = radius, 4 = height, 64 = radialSegments
+}
 
 const material = new THREE.MeshStandardMaterial({
   color: "#00ff00",
@@ -26,21 +29,18 @@ const mesh = new THREE.Mesh(geometry, material);
 
 scene.add(mesh);
 
-//Sizes
-
+// Sizes
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
 
-//Light
-
+// Light
 const light = new THREE.PointLight(0xffffff, 100, 100);
 light.position.set(0, 10, 10);
 scene.add(light);
 
-//Camera
-
+// Camera
 const camera = new THREE.PerspectiveCamera(
   45,
   sizes.width / sizes.height,
@@ -50,8 +50,7 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 25;
 scene.add(camera);
 
-//Renderer
-
+// Renderer
 const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGLRenderer({ canvas });
 
@@ -60,22 +59,20 @@ renderer.setPixelRatio(window.devicePixelRatio);
 
 renderer.render(scene, camera);
 
-//Resize
-
+// Resize
 window.addEventListener("resize", () => {
-  //Update sizes
+  // Update sizes
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
 
-  //Update Camera
+  // Update Camera
   camera.updateProjectionMatrix();
   camera.aspect = sizes.width / sizes.height;
 
   renderer.setSize(sizes.width, sizes.height);
 });
 
-//Controls
-
+// Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
@@ -84,7 +81,6 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 5;
 
 const loop = () => {
-  // mesh.position.x += 0.1;
   controls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(loop);
@@ -92,11 +88,12 @@ const loop = () => {
 
 loop();
 
-//Timeline magic
+// Timeline magic
 
 // Timeline for the 3D object animation
 const objectTl = gsap.timeline({
   defaults: { duration: 3, repeat: -1, yoyo: true },
+  paused: true,
 });
 objectTl.fromTo(
   mesh.position,
@@ -115,8 +112,7 @@ const uiTl = gsap.timeline({ defaults: { duration: 2 } });
 uiTl.fromTo("nav", { y: "-100%" }, { y: "0%" });
 uiTl.fromTo(".title", { opacity: 0 }, { opacity: 1 });
 
-//Mouse Animation Color
-
+// Mouse Animation Color
 let mouseDown = false;
 let rgb = [];
 window.addEventListener("mousedown", () => (mouseDown = true));
@@ -126,11 +122,11 @@ window.addEventListener("mousemove", (e) => {
   if (mouseDown) {
     rgb = [
       Math.round((e.pageX / sizes.width) * 255),
-      Math.round((e.pageY / sizes / height) * 255),
+      Math.round((e.pageY / sizes.height) * 255),
       150,
     ];
 
-    //Lets Animate
+    // Lets Animate
     let newColor = new THREE.Color(`rgb(${rgb.join(",")})`);
     gsap.to(mesh.material.color, {
       r: newColor.r,
@@ -138,4 +134,38 @@ window.addEventListener("mousemove", (e) => {
       b: newColor.b,
     });
   }
+});
+
+const moveButton = document.getElementById("moveButton");
+const stopButton = document.getElementById("stopButton");
+
+// Button bounce animation
+const initialBounceTl = gsap.timeline();
+
+initialBounceTl.fromTo(
+  [moveButton, stopButton],
+  { y: "-100%" },
+  { y: "0%", stagger: 0.2, ease: "bounce.out", duration: 1 }
+);
+
+// Start the initial bounce animation
+initialBounceTl.play();
+
+moveButton.addEventListener("click", () => {
+  bounce(moveButton);
+  objectTl.play();
+});
+
+stopButton.addEventListener("click", () => {
+  bounce(stopButton);
+  objectTl.pause();
+  gsap.to(mesh.position, { x: 0, duration: 1, ease: "power1.inOut" });
+  gsap.to(mesh.scale, { x: 1, y: 1, z: 1, duration: 1, ease: "power1.inOut" });
+  gsap.to(mesh.material.color, {
+    r: 0,
+    g: 1,
+    b: 0,
+    duration: 1,
+    ease: "power1.inOut",
+  });
 });

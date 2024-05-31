@@ -1,47 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
 
-body, html{
+body,
+html {
   overflow: hidden;
 }
 
-.webgl{
+.webgl {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
 }
 
-nav{
+nav {
   color: white;
   z-index: 2;
   position: relative;
   padding: 4rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 nav a {
   text-decoration: none;
   color: white;
   font-weight: bold;
+  font-size: 3rem;
 }
 
-ul{
-  display: flex;
-  list-style: none;
-  gap: 4rem;
-  justify-content: space-between;
-}
-
-.title{
+.title {
   color: white;
   z-index: 2;
   position: absolute;
@@ -49,4 +44,64 @@ ul{
   top: 80%;
   font-size: 3rem;
   transform: translate(-50%, -20%);
+}
+
+.button-div {
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  z-index: 2;
+}
+
+.start-div {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.stop-div {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.action-button {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  width: 10rem;
+  height: 40px;
+  z-index: 2;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 1rem;
+}
+
+#moveButton {
+  color: green;
+}
+
+#stopButton {
+  color: red;
+}
+
+@media (width <=425px) {
+  .title {
+    font-size: 1rem;
+  }
+}
+
+@media (width >=425px) {
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (width >=1024px) {
+  .title {
+    font-size: 3rem;
+  }
 }

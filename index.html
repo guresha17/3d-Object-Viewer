@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3d Object Viewer</title>
-</head>
-<body>
-  <canvas class="webgl"></canvas>
-  <nav>
-    <a href="/">Sphere</a>
-    <ul>
-      <li>Explore</li>
-      <li>Create</li>
-    </ul>
-  </nav>
-  <h1 class="title">Give it a spin</h1>
-  <script type="module" src="/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3d Object Viewer</title>
+  </head>
+  <body>
+    <canvas class="webgl"></canvas>
+    <nav>
+      <a href="/" id="sphereObject">Sphere</a>
+      <!-- <a href="/" id="coneObject">Cone</a> -->
+    </nav>
+    <h1 class="title">3d Object Viewer</h1>
+    <div class="button-div">
+      <div class="start-div">
+        <button id="moveButton" class="action-button">Start</button>
+      </div>
+      <div class="stop-div">
+        <button id="stopButton" class="action-button">Stop</button>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
 </html>
